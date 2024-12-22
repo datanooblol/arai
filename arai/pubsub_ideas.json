@@ -1,0 +1,26 @@
+{
+    "online": [
+        {"agent": "InputAgent", "sub": [], "pub": ["input_received"]},
+        {"agent": "Organizer", "sub": ["input_received"], "pub":["jargon_needed", "query_needed"]},
+        {"agent": "JargonDetector", "sub":["jargon_needed"], "pub":["editing_needed"]},
+        {"agent": "QueryRewriter", "sub":["editing_needed"], "pub":["query_rewritten"]},
+        {"agent": "Organizer", "sub": ["query_rewritten"], "pub":["query_needed"]},    
+        {"agent": "QueryDecomposer", "sub":["query_needed"], "pub":["query_decomposed"]},
+        {"agent": "Retriver", "sub":["query_decomposed"], "pub":["documents_retrieved"]},
+        {"agent": "Reranker", "sub":["documents_retrieved"], "pub":["documents_reranked"]},
+        {"agent": "DocumentCompressor", "sub":["documents_reranked"], "pub":["documents_compressed"]},
+        {"agent": "Reviewer", "sub":["documents_compressed"], "pub": ["documents_rejected", "documents_approved"]},
+        {"agent": "ContextAnalyzer", "sub":["documents_approved"], "pub":["documents_ready"]},
+        {"agent": "Organizer", "sub":["documents_ready"],"pub":["answer_needed"]},
+        {"agent": "Organizer", "sub":["document_rejected"], "pub":["human_in_the_loop_needed"]},
+        {"agent": "AnswerGenerator", "sub":["answer_needed"], "pub":[]},
+        {"agent": "BadNewsDeliver", "sub":["human_in_the_loop_needed"], "pub":[]}
+    ],
+    "offline":[
+        {"agent": "DocumentParser", "sub": [], "pub": ["summary_needed", "chunking_needed"]},
+        {"agent": "FirstPageSummarizer", "sub": ["summary_needed"], "pub": []},
+        {"agent": "Chunker", "sub": ["chunking_needed"], "pub": ["jargon_extraction_needed", "document_enrichment_needed"]},
+        {"agent": "JargonExtractor", "sub": ["jargon_extraction_needed"], "pub": []},
+        {"agent": "ChunkEnricher", "sub": ["document_enrichment_needed"], "pub": []}
+    ]
+}
